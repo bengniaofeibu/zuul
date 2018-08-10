@@ -1,0 +1,57 @@
+buildscript {
+	ext {
+		springBootVersion = '2.0.4.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-web')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+
+    //spring boot 监控
+	compile group: 'io.prometheus', name: 'simpleclient_spring_boot', version: '0.0.26'
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '2.0.4.RELEASE'
+	compile group: 'io.micrometer', name: 'micrometer-registry-prometheus', version: '1.0.6'
+
+    //swagger2
+	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.7.0'
+	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.7.0'
+
+	//elk
+	compile group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '4.11'
+
+
+	//data
+	runtime('mysql:mysql-connector-java')
+	compile group: 'org.apache.commons', name: 'commons-dbcp2', version: '2.1.1'
+
+
+
+
+
+
+
+
+
+
+}
