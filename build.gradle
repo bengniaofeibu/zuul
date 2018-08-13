@@ -26,7 +26,9 @@ repositories {
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
+	compile group: 'org.projectlombok', name: 'lombok', version: '1.16.8'
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+
 
     //spring boot 监控
 	compile group: 'io.prometheus', name: 'simpleclient_spring_boot', version: '0.0.26'
@@ -44,14 +46,6 @@ dependencies {
 	//data
 	runtime('mysql:mysql-connector-java')
 	compile group: 'org.apache.commons', name: 'commons-dbcp2', version: '2.1.1'
-
-
-
-
-
-
-
-
 
 
 }

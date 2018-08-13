@@ -2,6 +2,7 @@ package com.jiujiu.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +19,10 @@ public class TestController {
     private static final Logger LOGGER = LoggerFactory.getLogger(TestController.class);
 
     @ApiOperation(value = "这是一个Swagger测试",notes = "测试Swgger是否可行")
-    @ApiImplicitParam(name = "id",value = "测试id",paramType = "string",required = true,dataType ="Integer")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id",value = "测试id",paramType = "string",required = true,dataType ="Integer"),
+            @ApiImplicitParam(name = "userInfo",value = "测试id",paramType = "string",required = true,dataType ="Integer")
+    })
     @PostMapping(value = "/test")
     public String test(@RequestBody String id){
 
