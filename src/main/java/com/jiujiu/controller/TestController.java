@@ -1,14 +1,14 @@
 package com.jiujiu.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import com.jiujiu.entity.UserInfo;
+import com.jiujiu.service.UserService;
+import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -18,16 +18,23 @@ public class TestController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TestController.class);
 
-    @ApiOperation(value = "这是一个Swagger测试",notes = "测试Swgger是否可行")
+    @Autowired
+    private UserService userService;
+
+    @ApiOperation(value = "这是一个Swagger测试",notes = "测试Swagger是否可行")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id",value = "测试id",paramType = "string",required = true,dataType ="Integer"),
-            @ApiImplicitParam(name = "userInfo",value = "测试id",paramType = "string",required = true,dataType ="Integer")
+    })
+    @ApiResponses({
+            @ApiResponse(code = 500, message = "2001:因输入数据问题导致的报错"),
     })
     @PostMapping(value = "/test")
-    public String test(@RequestBody String id){
+    public String test(@RequestBody @ApiParam(name = "用户对象",required = true) UserInfo userInfo){
 
-        LOGGER.info("info 日志 {}",id);
+        LOGGER.info("info 日志 {}",userInfo.getId());
         LOGGER.error("error 日志");
+
+        userService.addUser(userInfo);
 
        return "hello world";
     }
