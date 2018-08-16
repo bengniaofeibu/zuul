@@ -7,14 +7,18 @@ spring:
     prefer-file-system-access: false
   application:
        name: demo2
-  mvc:
-    view:
-      prefix: /jsp/
-      suffix: .jsp
-  profiles:
-#    active: local
-    active: dev
-#    active: prod
+  cloud:
+    config:
+      label: master
+      profile: dev
+      uri: http://192.168.0.236:8081
+      name: application
+
+eureka:
+  client:
+    service-url:
+       defaultZone: http://106.15.47.133:10000/eureka/
+
   http:
     encoding:
       charset: utf-8

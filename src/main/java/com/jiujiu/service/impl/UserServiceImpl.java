@@ -17,6 +17,8 @@ public class UserServiceImpl implements UserService {
     public void addUser(UserInfo userInfo) {
         System.out.println("添加用户成功");
 
+
+
         //注册监听事件
         applicationContext.publishEvent(new UserListener(this,userInfo));
 
