@@ -4,7 +4,6 @@ package com.jiujiu.entity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
 import java.io.Serializable;
 
 @Data
@@ -19,3 +18,5 @@ public class UserInfo implements Serializable{
     @ApiModelProperty(value = "名字",required = true,example = "小明")
     private String name;
 }
+
+
