@@ -1,6 +1,7 @@
 package com.jiujiu.entity;
 
 
+import com.jiujiuwisdom.utils.RedisClient;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -17,6 +18,11 @@ public class UserInfo implements Serializable{
 
     @ApiModelProperty(value = "名字",required = true,example = "小明")
     private String name;
+
+
+    public static void main(String[] args) {
+        System.out.println(RedisClient.set("aaa","bbb"));
+    }
 }
 
 

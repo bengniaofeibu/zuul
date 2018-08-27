@@ -42,7 +42,6 @@ public class TestController {
         LOGGER.error("error 日志");
 
         userService.addUser(userInfo);
-
        return "hello world";
     }
 
