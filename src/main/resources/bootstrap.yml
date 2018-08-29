@@ -6,7 +6,7 @@ spring:
   freemarker:
     prefer-file-system-access: false
   application:
-       name: demo2
+       name: jjgroupclass
   cloud:
     config:
       label: master
@@ -15,8 +15,6 @@ spring:
       name: application
 
 eureka:
-  instance:
-    status-page-url: http://192.168.0.236:8082/swagger-ui.html
   client:
     service-url:
        defaultZone: http://106.15.47.133:10000/eureka/
