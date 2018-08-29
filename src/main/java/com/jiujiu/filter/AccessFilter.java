@@ -7,6 +7,7 @@ import com.netflix.zuul.exception.ZuulException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
@@ -23,7 +24,7 @@ public class AccessFilter extends ZuulFilter {
      */
     @Override
     public String filterType() {
-        return "pre";
+        return FilterConstants.PRE_TYPE;
     }
 
     /**
@@ -41,17 +42,7 @@ public class AccessFilter extends ZuulFilter {
      */
     @Override
     public boolean shouldFilter() {
-
-        RequestContext cx = RequestContext.getCurrentContext();
-        HttpServletRequest request = cx.getRequest();
-
-        String requestURI = request.getRequestURI();
-
-        //访问swagger api文档时不进行校验
-        if (StringUtils.isNotBlank(requestURI) && requestURI.endsWith("api-docs")){
-             return false;
-        }
-        return true;
+        return BaseFilter.isFilter();
     }
 
     /**
@@ -83,7 +74,7 @@ public class AccessFilter extends ZuulFilter {
                 cx.setSendZuulResponse(false);
                 cx.setResponseStatusCode(401);
                 cx.setResponseBody("{\"msg\":\"accessToken为空!\"}");
-                return cx;
+                return null;
             }
 
         } catch (IOException e) {

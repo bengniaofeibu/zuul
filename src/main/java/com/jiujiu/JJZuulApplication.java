@@ -1,5 +1,6 @@
 package com.jiujiu;
 import com.jiujiu.filter.AccessFilter;
+import com.jiujiu.filter.ResponseFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
@@ -23,4 +24,10 @@ public class JJZuulApplication {
    public AccessFilter accessFilter(){
 		return new AccessFilter();
    }
+
+    //设置路由
+    @Bean
+    public ResponseFilter responseFilter(){
+        return new ResponseFilter();
+    }
 }
