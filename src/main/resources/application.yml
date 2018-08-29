@@ -18,6 +18,11 @@ zuul:
      jjgroupclass: /jjgroupclass/**
 
 
+        #路由地址
+        #要转发的服务名称
+     server-a:
+        path: /ehomeuser/**
+        serviceId: EhomeUser
 # spring boot 监控
 management:
   endpoints:
