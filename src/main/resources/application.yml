@@ -1,0 +1,29 @@
+server:
+  port: 8082
+
+spring:
+  freemarker:
+    prefer-file-system-access: false
+  application:
+       name: jjzuul
+
+eureka:
+  client:
+    service-url:
+       defaultZone: http://106.15.47.133:10000/eureka/
+
+#配置路由
+zuul:
+  routes:
+     jjgroupclass:
+        #路由地址
+        path: /jjgroupclass/**
+        #要转发的服务名称
+        serviceId: jjgroupclass
+
+# spring boot 监控
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

@@ -5,7 +5,6 @@ buildscript {
 
 	repositories {
 		maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
-		maven { url 'http://139.196.194.172:8181/nexus/content/repositories/99rep/' }
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -23,7 +22,6 @@ sourceCompatibility = 1.8
 
 repositories {
 	maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
-	maven { url 'http://139.196.194.172:8181/nexus/content/repositories/99rep/' }
 
 }
 
@@ -37,7 +35,6 @@ dependencies {
 
 	compile fileTree(dir:'libs',include:['*.jar'])
 
-	compile('com.jiujiu.wisdom:core-util:Releases')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile group: 'org.projectlombok', name: 'lombok', version: '1.16.8'
 	testCompile('org.springframework.boot:spring-boot-starter-test')
@@ -62,10 +59,6 @@ dependencies {
 	//elk
 	compile group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '4.11'
 
-
-	//data
-	runtime('mysql:mysql-connector-java')
-	compile group: 'org.apache.commons', name: 'commons-dbcp2', version: '2.1.1'
 }
 
 dependencyManagement {
