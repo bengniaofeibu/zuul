@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
 
+import static javassist.CtClass.version;
+
 public class AccessFilter extends ZuulFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AccessFilter.class);
@@ -108,7 +110,7 @@ public class AccessFilter extends ZuulFilter {
         RequestContext cx = RequestContext.getCurrentContext();
         HttpServletRequest request = cx.getRequest();
 
-        LOGGER.info(" ip {} send {} request to {}",request.getRemoteAddr(),request.getMethod(),request.getRequestURI().toString());
+        LOGGER.info(" ip {} send {} request to {}", request.getRemoteAddr(), request.getMethod(), request.getRequestURI().toString());
 
         try {
             String version = request.getHeader("version");
@@ -119,29 +121,10 @@ public class AccessFilter extends ZuulFilter {
             String plat = request.getHeader("plat");
             String appVersion = request.getHeader("appVersion");
 
-            String data;
-            StringBuilder sb = new StringBuilder();
-            while ((data=reader.readLine()) != null){
-               sb.append(data).toString();
-            }
 
-            Map map = JSONUtil.parseObject(sb.toString(), Map.class);
-
-            String accessToken = (String) map.get("accessToken");
-
-            if (StringUtils.isBlank(accessToken)){
-                cx.setSendZuulResponse(false);
-                cx.setResponseStatusCode(401);
-                cx.setResponseBody("{\"msg\":\"accessToken为空!\"}");
+            if (!StringUtils.isBlank(isTest) && Integer.parseInt(isTest) == 99) {
                 return null;
             }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            if(!StringUtils.isBlank(isTest) && Integer.parseInt(isTest) == 99){
-                return null;
-            }
-
             ApiHead head = new ApiHead();
             head.setVersion(version);
             head.setVersion(certType);
@@ -150,20 +133,23 @@ public class AccessFilter extends ZuulFilter {
             head.setVersion(isTest);
             head.setVersion(plat);
             head.setVersion(appVersion);
-            JSONObject jsonObject = this.valideHeadApi(head);
-            if(jsonObject.getInteger("code")==201){
-                return badResponse(cx,wrongParam());
-            }else if(jsonObject.getInteger("code")==202){
-                return badResponse(cx,wrongCheck());
-            }else if(jsonObject.getInteger("code")==204){
-                return badResponse(cx,wrongTime());
+            JSONObject jsonObject = null;
+            jsonObject = this.valideHeadApi(head);
+            if (jsonObject.getInteger("code") == 201) {
+                return badResponse(cx, wrongParam());
+            } else if (jsonObject.getInteger("code") == 202) {
+                return badResponse(cx, wrongCheck());
+            } else if (jsonObject.getInteger("code") == 204) {
+                return badResponse(cx, wrongTime());
             }
-        } catch (Exception e) {
+
+        } catch(Exception e){
             LOGGER.error(e.getMessage());
-            return badResponse(cx,systemError());
+            return badResponse(cx, systemError());
         }
         return null;
     }
+
 
     public static JSONObject valideHeadApi(ApiHead head) throws Exception{
         String valideMsg = "";
