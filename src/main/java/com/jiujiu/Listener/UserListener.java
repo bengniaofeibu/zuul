@@ -1,6 +1,5 @@
 package com.jiujiu.Listener;
 
-import com.jiujiu.entity.UserInfo;
 import lombok.Getter;
 import lombok.Setter;
 

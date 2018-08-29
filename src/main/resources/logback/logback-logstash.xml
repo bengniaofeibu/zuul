@@ -3,8 +3,14 @@
     <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
         <destination>139.196.194.172:4560</destination>
         <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder">
-        <customFields>{"server_name":"demo2"}</customFields>
+        <customFields>{"server_name":"jjgroupclass"}</customFields>
         </encoder>
+        <!-- 当有多个多个logstash IP或端口可以轮询负载各端口 -->
+        <!--<connectionStrategy>
+            　　<roundRobin>
+            　　　　<connectionTTL>5 minutes</connectionTTL>
+            　　</roundRobin>
+        </connectionStrategy>-->
     </appender>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
