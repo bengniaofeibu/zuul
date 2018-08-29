@@ -1,5 +1,8 @@
 package com.jiujiu.filter;
 
+import com.alibaba.fastjson.JSONObject;
+import com.jiujiu.Head.ApiHead;
+import com.jiujiu.Verification.ApiVerification;
 import com.jiujiuwisdom.utils.JSONUtil;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
@@ -9,13 +12,55 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Map;
 
 public class AccessFilter extends ZuulFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AccessFilter.class);
+
+    private static final String wrongParam(){
+        return "{\"code\":201,\"msg\":\"参数缺失\"}";
+    }
+
+    private static final String wrongCheck(){
+        return "{\"code\":202,\"msg\":\"签名错误\"}";
+    }
+
+    private static final String wrongTime(){
+        return "{\"code\":204,\"msg\":\"时间错误\"}";
+    }
+
+    private static final String systemError(){
+        return "{\"code\":-1,\"msg\":\"系统内部错误\"}";
+    }
+
+    public final static String MD5 = "0";
+
+    public final static String RSA = "1";
+
+    public final static String APP_KEY="402880496058fbb7016058fc201e0009";
+
+    public final static String RSA_KEY="502880496058fbb7016068fc201e0019";
+
+    public final static String PRIVATE_Key="MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAMoSUQGunPuVjsAN" +
+            "SoMq6wIpYutgdiZE1fkQzW1bx/K7ehFAeI1CoLO+Ij1bz17mT6//jygZ8D/CvnGW" +
+            "deOvxkSBngFdBTmqkY/WrOxf1LoxT/AczYYVp2SRcvDHZ39w/ha+Dfmk5CaRcIhP" +
+            "4HYtoUEjHTvQHX1eZj02Ei+XL1VPAgMBAAECgYBNUtD4qc6cXtBvISbgJm4jN58I" +
+            "nrLXVgPi+NEDBdnvQlole9wlgddosFr9y8IAeHUJzesD11kdrPGfGYonBD4DjtG2" +
+            "GGRj0Lz+fPbMyLABtwHv4wPOho6hmrq5jWZMYrSOpLWFK35r1rthnmMMu+ZZnXuF" +
+            "cEydFlDxumvBb/tJEQJBAOiTWHkGDGAn27f4GM29GRimYCNCOuYZuISPrl8mjrac" +
+            "DoR9YLGMb3eyBnZaKOsnwyuzEAiUq+jLtiK7o9D0RjsCQQDebHcDNVbYxHt8TUxG" +
+            "7owuAD2qvYXBpAF/xFNpqfbIDV9UCwkGlDcuQAZQIvHTZhn9UuhOLe5cAFKnKEi6" +
+            "2ff9AkBeuFvI9lil9LW8iDN53zDQZDo1Qe0A96q5elb285od7xLOjM2Lofln0z5k" +
+            "hzWxCAGp04SNKheVeRnVrXv7RvEvAkBs1nyCKGaf2b1nPNfXWcFkfR+v3d+Gur81" +
+            "CxeZ+95TVB/SmzfGbV53FkNAkWjt/ec3y4r7PoSFpm7Ldu3n6OLtAkEAh+SEu2Es" +
+            "hYlGtLXfOFHm1mK5/Zdh0BCrEd11a5eZcW643UDSNQjcamK37XLsfweKfbhH7Jcg" +
+            "h9UgFOifE6CXHA==";
+
 
     /**
      *   pre、route、post、error，对应AOP里的前加强、前后加强、后加强、异常处理
@@ -54,6 +99,13 @@ public class AccessFilter extends ZuulFilter {
         return true;
     }
 
+    private RequestContext badResponse(RequestContext cx,String res){
+        cx.setSendZuulResponse(false);
+        cx.setResponseBody(res);
+        cx.getResponse().setContentType("application/json; charset=utf8");
+        return cx;
+    }
+
     /**
      *  过滤逻辑
      * @return
@@ -67,28 +119,52 @@ public class AccessFilter extends ZuulFilter {
 
         LOGGER.info(" ip {} send {} request to {}",request.getRemoteAddr(),request.getMethod(),request.getRequestURI().toString());
 
-        try (BufferedReader reader = request.getReader()) {
+        try {
+            String version = request.getHeader("version");
+            String certType = request.getHeader("certType");
+            String certification = request.getHeader("certification");
+            String timestamp = request.getHeader("timestamp");
+            String isTest = request.getHeader("isTest");
+            String plat = request.getHeader("plat");
+            String appVersion = request.getHeader("appVersion");
 
-            String data;
-            StringBuilder sb = new StringBuilder();
-            while ((data=reader.readLine()) != null){
-               sb.append(data).toString();
+            if(!StringUtils.isBlank(isTest) && Integer.parseInt(isTest) == 99){
+                return null;
             }
 
-            Map map = JSONUtil.parseObject(sb.toString(), Map.class);
-
-            String accessToken = (String) map.get("accessToken");
-
-            if (StringUtils.isBlank(accessToken)){
-                cx.setSendZuulResponse(false);
-                cx.setResponseStatusCode(401);
-                cx.setResponseBody("{\"msg\":\"accessToken为空!\"}");
-                return cx;
+            ApiHead head = new ApiHead();
+            head.setVersion(version);
+            head.setVersion(certType);
+            head.setVersion(certification);
+            head.setVersion(timestamp);
+            head.setVersion(isTest);
+            head.setVersion(plat);
+            head.setVersion(appVersion);
+            JSONObject jsonObject = this.valideHeadApi(head);
+            if(jsonObject.getInteger("code")==201){
+                return badResponse(cx,wrongParam());
+            }else if(jsonObject.getInteger("code")==202){
+                return badResponse(cx,wrongCheck());
+            }else if(jsonObject.getInteger("code")==204){
+                return badResponse(cx,wrongTime());
             }
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            return badResponse(cx,systemError());
         }
         return null;
+    }
+
+    public static JSONObject valideHeadApi(ApiHead head) throws Exception{
+        String valideMsg = "";
+        if(RSA.equalsIgnoreCase(head.getCertType())){
+            valideMsg= ApiVerification.VerificationHandle(head,RSA_KEY, PRIVATE_Key);
+        }else {
+            valideMsg= ApiVerification.VerificationHandle(head,APP_KEY,"0");
+        }
+        JSONObject jsonObject=JSONObject.parseObject(valideMsg);
+        //参数格式校验失败
+
+        return jsonObject;
     }
 }
