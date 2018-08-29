@@ -17,6 +17,9 @@ zuul:
   routes:
      jjgroupclass: /jjgroupclass/**
      EhomeUser: /ehomeuser/**
+
+
+
 # spring boot 监控
 management:
   endpoints:
