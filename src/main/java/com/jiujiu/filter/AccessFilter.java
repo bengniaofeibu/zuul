@@ -47,6 +47,7 @@ public class AccessFilter extends ZuulFilter {
 
         String requestURI = request.getRequestURI();
 
+        //访问swagger api文档时不进行校验
         if (StringUtils.isNotBlank(requestURI) && requestURI.endsWith("api-docs")){
              return false;
         }
