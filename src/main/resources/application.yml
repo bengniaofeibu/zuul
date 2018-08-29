@@ -15,7 +15,7 @@ eureka:
 #配置路由
 zuul:
   routes:
-     jjgroupclass:
+     server-a:
         #路由地址
         path: /jjgroupclass/**
         #要转发的服务名称
