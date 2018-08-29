@@ -113,6 +113,7 @@ public class AccessFilter extends ZuulFilter {
         LOGGER.info(" ip {} send {} request to {}", request.getRemoteAddr(), request.getMethod(), request.getRequestURI().toString());
 
         try {
+
             String version = request.getHeader("version");
             String certType = request.getHeader("certType");
             String certification = request.getHeader("certification");
@@ -125,6 +126,7 @@ public class AccessFilter extends ZuulFilter {
             if (!StringUtils.isBlank(isTest) && Integer.parseInt(isTest) == 99) {
                 return null;
             }
+
             ApiHead head = new ApiHead();
             head.setVersion(version);
             head.setVersion(certType);
@@ -133,7 +135,7 @@ public class AccessFilter extends ZuulFilter {
             head.setVersion(isTest);
             head.setVersion(plat);
             head.setVersion(appVersion);
-            JSONObject jsonObject = null;
+            JSONObject jsonObject;
             jsonObject = this.valideHeadApi(head);
             if (jsonObject.getInteger("code") == 201) {
                 return badResponse(cx, wrongParam());
@@ -152,15 +154,12 @@ public class AccessFilter extends ZuulFilter {
 
 
     public static JSONObject valideHeadApi(ApiHead head) throws Exception{
-        String valideMsg = "";
+        String valideMsg;
         if(RSA.equalsIgnoreCase(head.getCertType())){
             valideMsg= ApiVerification.VerificationHandle(head,RSA_KEY, PRIVATE_Key);
         }else {
             valideMsg= ApiVerification.VerificationHandle(head,APP_KEY,"0");
         }
-        JSONObject jsonObject=JSONObject.parseObject(valideMsg);
-        //参数格式校验失败
-
-        return jsonObject;
+        return JSONObject.parseObject(valideMsg);
     }
 }
