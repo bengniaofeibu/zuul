@@ -45,6 +45,7 @@ dependencies {
 	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-eureka', version: '1.3.5.RELEASE'
 	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-config', version: '2.0.1.RELEASE'
 	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-bus-amqp', version: '2.0.0.RELEASE'
+	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-zuul', version: '1.4.3.RELEASE'
 
 
 	//spring boot 监控
