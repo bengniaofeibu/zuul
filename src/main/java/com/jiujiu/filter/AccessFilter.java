@@ -41,7 +41,7 @@ public class AccessFilter extends ZuulFilter {
         return "{\"code\":-1,\"msg\":\"系统内部错误\"}";
     }
 
-    public final static String MD5 = "0";
+    public final static String MD5 = "MD5";
 
     public final static String RSA = "1";
 
