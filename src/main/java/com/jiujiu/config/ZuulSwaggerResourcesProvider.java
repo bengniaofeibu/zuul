@@ -1,5 +1,7 @@
 package com.jiujiu.config;
 
+import io.swagger.annotations.ApiModelProperty;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.zuul.filters.Route;
 import org.springframework.cloud.netflix.zuul.filters.RouteLocator;
 import org.springframework.context.annotation.Primary;
@@ -14,7 +16,8 @@ import java.util.List;
 @Primary
 public class ZuulSwaggerResourcesProvider implements SwaggerResourcesProvider{
 
-
+    @Autowired
+    private ZuulRoutesConfig zuulRoutesConfig;
 
     private final RouteLocator routeLocator;
 
@@ -29,7 +32,13 @@ public class ZuulSwaggerResourcesProvider implements SwaggerResourcesProvider{
         List<SwaggerResource> resources = new ArrayList<>();
         List<Route> routes = routeLocator.getRoutes();
         for (Route route:routes) {
-            resources.add(swaggerResource(route.getId(), route.getFullPath().replace("**", "v2/api-docs")));
+            for (String value : zuulRoutesConfig.getRoutes().values()) {
+                System.out.println("Value = " + value);
+                String res[] = value.split("/");
+                if(res[1].equals(route.getId()) || res[1].equals(route.getId())){
+                    resources.add(swaggerResource(route.getId(), route.getFullPath().replace("**", "v2/api-docs")));
+                }
+            }
         }
         return resources;
     }

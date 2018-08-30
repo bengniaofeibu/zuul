@@ -10,19 +10,15 @@ spring:
 eureka:
   client:
     service-url:
-       defaultZone: http://106.15.47.133:10000/eureka/
+       defaultZone: http://192.168.0.201:8888/eureka/
 
 #配置路由
 zuul:
   routes:
-     jjgroupclass: /jjgroupclass/**
+     EhomeUser: /user/**
+     EhomeLock: /lock/**
 
 
-        #路由地址
-        #要转发的服务名称
-     server-a:
-        path: /ehomeuser/**
-        serviceId: EhomeUser
 # spring boot 监控
 management:
   endpoints:
