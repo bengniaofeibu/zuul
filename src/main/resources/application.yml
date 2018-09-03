@@ -16,6 +16,7 @@ eureka:
 zuul:
   routes:
      EhomeUser: /jjgroupclass/**
+     jjusernutrition : /jjusernutrition/**
 
 
 # spring boot 监控
