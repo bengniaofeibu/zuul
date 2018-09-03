@@ -15,6 +15,7 @@ zuul:
      jjgroupclass: /jjgroupclass/**
 
 
+
 # spring boot 监控
 management:
   endpoints:
