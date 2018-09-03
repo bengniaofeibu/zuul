@@ -1,0 +1,4 @@
+eureka:
+  client:
+    service-url:
+       defaultZone: http://106.15.47.133:10000/eureka/

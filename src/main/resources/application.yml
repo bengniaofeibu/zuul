@@ -5,17 +5,14 @@ spring:
   freemarker:
     prefer-file-system-access: false
   application:
-       name: jjzuul
-
-eureka:
-  client:
-    service-url:
-       defaultZone: http://106.15.47.133:10000/eureka/
+    name: jjzuul
+  profiles:
+    active: dev
 
 #配置路由
 zuul:
   routes:
-     EhomeUser: /jjgroupclass/**
+     jjgroupclass: /jjgroupclass/**
 
 
 # spring boot 监控
