@@ -41,6 +41,7 @@ dependencies {
 	compile group: 'org.projectlombok', name: 'lombok', version: '1.16.8'
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	compile('com.alibaba:fastjson:1.2.38')
+//	compileOnly "org.springframework.boot:spring-boot-configuration-processor"
 
 
 	//springcloud

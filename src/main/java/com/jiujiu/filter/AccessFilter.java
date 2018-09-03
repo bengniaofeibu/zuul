@@ -41,7 +41,7 @@ public class AccessFilter extends ZuulFilter {
         return "{\"code\":-1,\"msg\":\"系统内部错误\"}";
     }
 
-    public final static String MD5 = "0";
+    public final static String MD5 = "MD5";
 
     public final static String RSA = "1";
 
@@ -129,12 +129,12 @@ public class AccessFilter extends ZuulFilter {
 
             ApiHead head = new ApiHead();
             head.setVersion(version);
-            head.setVersion(certType);
-            head.setVersion(certification);
-            head.setVersion(timestamp);
-            head.setVersion(isTest);
-            head.setVersion(plat);
-            head.setVersion(appVersion);
+            head.setCertType(certType);
+            head.setCertification(certification);
+            head.setTimestamp(timestamp);
+            head.setIsTest(Integer.parseInt(isTest));
+            head.setPlat(plat);
+            head.setAppVersion(appVersion);
             JSONObject jsonObject;
             jsonObject = this.valideHeadApi(head);
             if (jsonObject.getInteger("code") == 201) {

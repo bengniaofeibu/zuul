@@ -16,8 +16,6 @@ eureka:
 zuul:
   routes:
      jjgroupclass: /jjgroupclass/**
-     EhomeUser: /ehomeuser/**
-
 
 
 # spring boot 监控
