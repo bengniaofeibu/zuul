@@ -19,6 +19,7 @@ spring:
 zuul:
   routes:
      jjgroupclass: /jjgroupclass/**
+     jjusernutrition: /jjusernutrition/**
 
 
 # spring boot 监控
