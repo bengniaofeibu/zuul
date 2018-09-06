@@ -21,6 +21,7 @@ zuul:
      jjgroupclass: /jjgroupclass/**
      jjuserbase: /jjuserbase/**
      jjsport: /jjsport/**
+     jjdiet: /jjdiet/**
 
 
 # spring boot 监控
