@@ -20,6 +20,7 @@ zuul:
   routes:
      jjgroupclass: /jjgroupclass/**
      jjuserbase: /jjuserbase/**
+     jjsport: /jjsport/**
 
 
 # spring boot 监控
