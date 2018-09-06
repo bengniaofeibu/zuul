@@ -7,8 +7,8 @@ spring:
   application:
        name: jjzuul
   profiles:
-      active: local
-#      active: dev
+#      active: local
+      active: dev
 #      active: prod
 #eureka:
 #  client:
@@ -19,7 +19,7 @@ spring:
 zuul:
   routes:
      jjgroupclass: /jjgroupclass/**
-     jjusernutrition: /jjusernutrition/**
+     jjuserbase: /jjuserbase/**
 
 
 # spring boot 监控
